@@ -1,25 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import QRCodeGenerator from './components/QRCodeGenerator';
+import Controller from './components/Controller';
 import './App.css';
 
 function App() {
+  const handlePlayerJoin = (playerId: string) => {
+    console.log('Player joined:', playerId);
+    // Handle player joining logic here
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="main-game">
+                <header className="App-header">
+                  <h1>Hack UMBC Game</h1>
+                  <QRCodeGenerator onPlayerJoin={handlePlayerJoin} />
+                  <div className="game-area">
+                    <p>Main game will be displayed here</p>
+                  </div>
+                </header>
+              </div>
+            }
+          />
+          <Route
+            path="/controller/:sessionId"
+            element={<Controller />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
