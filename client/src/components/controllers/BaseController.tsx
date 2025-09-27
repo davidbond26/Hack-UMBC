@@ -37,8 +37,6 @@ const BaseController: React.FC<BaseControllerProps> = ({ playerName, sessionId, 
           }}></div>
           <span>Connected to game</span>
         </div>
-      </div>
-
       {/* Test Button for Proof of Concept */}
       <div style={{ margin: '30px 0' }}>
         <button

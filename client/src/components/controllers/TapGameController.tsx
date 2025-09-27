@@ -24,41 +24,38 @@ const TapGameController: React.FC<TapGameControllerProps> = ({ playerName, sessi
   }, [timeLeft]);
 
   return (
-    <div className="tap-game-controller">
-      <div className="controller-header">
-        <h2>{playerName}</h2>
-        <p>Tap Challenge</p>
+    <div className="min-h-screen bg-teal-100 flex flex-col justify-center items-center p-6">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold mb-2">{playerName}</h2>
+        <p className="text-gray-600">Tap Challenge</p>
       </div>
 
-      <div className="game-stats">
-        <div className="tap-counter">Taps: {tapCount}</div>
-        <div className="timer">Time: {timeLeft}s</div>
+      <div className="flex gap-8 mb-6">
+        <div className="text-center">
+          <div className="text-3xl font-bold text-teal-600">{tapCount}</div>
+          <div className="text-sm text-gray-600">Taps</div>
+        </div>
+        <div className="text-center">
+          <div className="text-3xl font-bold text-orange-600">{timeLeft}s</div>
+          <div className="text-sm text-gray-600">Time</div>
+        </div>
       </div>
 
-      <div className="game-controls">
+      <div className="flex-1 flex items-center justify-center">
         <button
-          className="tap-button"
           onClick={handleTap}
           disabled={timeLeft === 0}
-          style={{
-            width: '250px',
-            height: '250px',
-            borderRadius: '50%',
-            fontSize: '32px',
-            fontWeight: 'bold',
-            backgroundColor: timeLeft > 0 ? '#4ecdc4' : '#ccc',
-            color: 'white',
-            border: 'none',
-            margin: '20px auto',
-            display: 'block',
-            cursor: timeLeft > 0 ? 'pointer' : 'not-allowed'
-          }}
+          className={`w-64 h-64 rounded-full text-3xl font-bold border-none shadow-lg transition-all duration-100 active:scale-95 ${
+            timeLeft > 0
+              ? 'bg-teal-500 text-white cursor-pointer hover:bg-teal-600 active:bg-teal-700'
+              : 'bg-gray-400 text-white cursor-not-allowed'
+          }`}
         >
           {timeLeft > 0 ? 'TAP!' : 'TIME UP!'}
         </button>
       </div>
 
-      <div className="instructions">
+      <div className="text-center text-gray-600 mb-8">
         <p>Tap as fast as you can!</p>
       </div>
     </div>
