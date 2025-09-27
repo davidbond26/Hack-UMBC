@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import QRCodeGenerator from './components/QRCodeGenerator';
+import MainDisplay from './components/MainDisplay';
 import Controller from './components/Controller';
 import './App.css';
 

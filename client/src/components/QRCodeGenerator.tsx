@@ -3,20 +3,19 @@ import QRCode from 'qrcode';
 
 interface QRCodeGeneratorProps {
   onPlayerJoin: (playerId: string) => void;
+  sessionId?: string;
 }
 
-const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ onPlayerJoin }) => {
+const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ onPlayerJoin, sessionId: propSessionId }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
   const [sessionId, setSessionId] = useState<string>('');
   const [controllerUrl, setControllerUrl] = useState<string>('');
 
   useEffect(() => {
-    // Generate unique session ID
-    const generateSessionId = () => {
-      return Math.random().toString(36).substring(2) + Date.now().toString(36);
-    };
-
-    const newSessionId = generateSessionId();
+    // Use provided sessionId or generate new one
+    const newSessionId = propSessionId || (
+      Math.random().toString(36).substring(2) + Date.now().toString(36)
+    );
     setSessionId(newSessionId);
 
     // Create the controller URL
@@ -25,7 +24,7 @@ const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ onPlayerJoin }) => {
 
     // Generate QR code
     generateQRCode(newControllerUrl);
-  }, []);
+  }, [propSessionId]);
 
   const generateQRCode = async (url: string) => {
     try {
