@@ -4,6 +4,7 @@ import QRCodeGenerator from './components/QRCodeGenerator';
 import Controller from './components/Controller';
 import './App.css';
 
+
 function App() {
   const handlePlayerJoin = (playerId: string) => {
     console.log('Player joined:', playerId);
