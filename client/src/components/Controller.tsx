@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BaseController from './controllers/BaseController';
 import JumpGameController from './controllers/JumpGameController';
 import TapGameController from './controllers/TapGameController';
 import WordGameController from './controllers/WordGameController';
+
+
 
 type GameType = 'none' | 'jump' | 'tap' | 'word';
 

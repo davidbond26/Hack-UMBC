@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainDisplay from './components/MainDisplay';
 import Controller from './components/Controller';
+import QRCodeGenerator from './components/QRCodeGenerator';
 import './App.css';
 
 function App() {

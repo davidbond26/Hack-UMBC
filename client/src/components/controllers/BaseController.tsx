@@ -95,6 +95,7 @@ const BaseController: React.FC<BaseControllerProps> = ({ playerName, sessionId, 
         }
       `}</style>
     </div>
+    </div>
   );
 };
 
