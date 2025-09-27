@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
-import './styles.css';
 
 interface QRCodeGeneratorProps {
   onPlayerJoin: (playerId: string) => void;
@@ -47,40 +46,24 @@ const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ onPlayerJoin }) => {
   };
 
   return (
-    <div className="qr-code-container">
-      <h2>Scan to Join Game</h2>
-      <div className="qr-code-placeholder">
+    <div className="text-center">
+      <h2 className="text-black text-3xl mb-5" style={{ fontFamily: 'LL Baguid, Arial, sans-serif' }}>Scan to Join Game</h2>
+      <div>
         {qrCodeUrl.startsWith('data:') ? (
           <img
             src={qrCodeUrl}
             alt="QR Code for joining game"
-            style={{
-              width: '200px',
-              height: '200px',
-              margin: '20px auto',
-              display: 'block'
-            }}
+            className="w-64 h-64 mx-auto block border-4 border-white rounded-xl"
           />
         ) : (
-          <div style={{
-            width: '200px',
-            height: '200px',
-            border: '2px solid black',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '20px auto',
-            backgroundColor: 'white'
-          }}>
-            <div style={{ textAlign: 'center', fontSize: '12px' }}>
+          <div className="w-64 h-64 border-4 border-white rounded-xl flex items-center justify-center mx-auto bg-white">
+            <div className="text-center text-sm text-black">
               Loading QR Code...<br/>
               Session: {sessionId.substring(0, 8)}...
             </div>
           </div>
         )}
       </div>
-      <p>Session ID: {sessionId}</p>
-      <p>Controller URL: {controllerUrl}</p>
     </div>
   );
 };

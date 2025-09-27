@@ -4,7 +4,6 @@ import BaseController from './controllers/BaseController';
 import JumpGameController from './controllers/JumpGameController';
 import TapGameController from './controllers/TapGameController';
 import WordGameController from './controllers/WordGameController';
-import './styles.css';
 
 type GameType = 'none' | 'jump' | 'tap' | 'word';
 
@@ -66,66 +65,66 @@ const Controller: React.FC = () => {
 
   if (!isConnected) {
     return (
-      <div className="controller-join">
-        <h1>Join Game</h1>
-        <p>Session: {sessionId}</p>
-        <input
-          type="text"
-          placeholder="Enter your name"
-          value={playerName}
-          onChange={(e) => setPlayerName(e.target.value)}
-          className="player-name-input"
-          style={{
-            width: '100%',
-            padding: '15px',
-            fontSize: '16px',
-            borderRadius: '8px',
-            border: '2px solid #ddd',
-            marginBottom: '15px'
-          }}
-        />
-        <button
-          onClick={handleJoinGame}
-          disabled={!playerName.trim()}
-          style={{
-            width: '100%',
-            padding: '15px',
-            fontSize: '18px',
-            fontWeight: 'bold',
-            backgroundColor: playerName.trim() ? '#4CAF50' : '#ccc',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: playerName.trim() ? 'pointer' : 'not-allowed'
-          }}
-        >
-          Join Game
-        </button>
+      <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-6">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+          <h1 className="text-3xl font-bold text-center mb-4">Join Game</h1>
+          <p className="text-center text-gray-600 mb-6">Session: {sessionId}</p>
+          <input
+            type="text"
+            placeholder="Enter your name"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg mb-4 focus:border-blue-500 focus:outline-none"
+          />
+          <button
+            onClick={handleJoinGame}
+            disabled={!playerName.trim()}
+            className={`w-full p-4 text-lg font-bold rounded-lg ${
+              playerName.trim()
+                ? 'bg-green-500 hover:bg-green-600 cursor-pointer'
+                : 'bg-gray-400 cursor-not-allowed'
+            } text-white transition-colors`}
+          >
+            Join Game
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="controller-interface">
+    <div className="min-h-screen">
       {renderGameController()}
 
       {/* Temporary dev controls - remove in production */}
-      <div className="dev-controls" style={{
-        position: 'fixed',
-        bottom: '10px',
-        left: '10px',
-        right: '10px',
-        background: 'rgba(0,0,0,0.8)',
-        color: 'white',
-        padding: '10px',
-        borderRadius: '8px',
-        fontSize: '12px'
-      }}>
-        <p>Dev Controls (will be removed):</p>
-        <button onClick={() => switchGame('none')} style={{margin: '2px', padding: '5px'}}>Base</button>
-        <button onClick={() => switchGame('jump')} style={{margin: '2px', padding: '5px'}}>Jump</button>
-        <button onClick={() => switchGame('tap')} style={{margin: '2px', padding: '5px'}}>Tap</button>
-        <button onClick={() => switchGame('word')} style={{margin: '2px', padding: '5px'}}>Word</button>
+      <div className="fixed bottom-3 left-3 right-3 bg-black bg-opacity-80 text-white p-3 rounded-lg text-xs">
+        <p className="mb-2">Dev Controls (will be removed):</p>
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={() => switchGame('none')}
+            className="bg-gray-600 px-2 py-1 rounded text-white hover:bg-gray-500"
+          >
+            Base
+          </button>
+          <button
+            onClick={() => switchGame('jump')}
+            className="bg-red-600 px-2 py-1 rounded text-white hover:bg-red-500"
+          >
+            Jump
+          </button>
+          <button
+            onClick={() => switchGame('tap')}
+            className="bg-blue-600 px-2 py-1 rounded text-white hover:bg-blue-500"
+          >
+            Tap
+          </button>
+          <button
+            onClick={() => switchGame('word')}
+            className="bg-green-600 px-2 py-1 rounded text-white hover:bg-green-500"
+          >
+            Word
+          </button>
+        </div>
       </div>
     </div>
   );
