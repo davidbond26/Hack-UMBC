@@ -10,10 +10,11 @@ interface Roadblocker {
 
 interface RacingGameProps {
   onGameEnd?: (score: number, time: number) => void;
+  onBackToMenu?: () => void;
   sessionId?: string;
 }
 
-const RacingGame: React.FC<RacingGameProps> = ({ onGameEnd, sessionId }) => {
+const RacingGame: React.FC<RacingGameProps> = ({ onGameEnd, onBackToMenu, sessionId }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
   const [gameStartTime, setGameStartTime] = useState(0);
@@ -348,8 +349,45 @@ const RacingGame: React.FC<RacingGameProps> = ({ onGameEnd, sessionId }) => {
       alignItems: 'center',
       fontFamily: 'LL Baguid, Arial, sans-serif',
       overflow: 'hidden',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      position: 'relative'
     }}>
+      {/* Collapsible Back to Menu Tab */}
+      {onBackToMenu && (
+        <div
+          onClick={onBackToMenu}
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '-120px',
+            transform: 'translateY(-50%)',
+            backgroundColor: '#74c5ff',
+            color: 'black',
+            border: '2px solid #000000',
+            borderLeft: 'none',
+            padding: '15px 25px 15px 15px',
+            fontSize: '1rem',
+            borderRadius: '0 12px 12px 0',
+            cursor: 'pointer',
+            fontFamily: 'LL Baguid, Arial, sans-serif',
+            fontWeight: 'bold',
+            zIndex: 1000,
+            boxShadow: '2px 4px 8px rgba(0,0,0,0.3)',
+            transition: 'left 0.3s ease',
+            width: '150px',
+            textAlign: 'center',
+            userSelect: 'none'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.left = '0px';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.left = '-120px';
+          }}
+        >
+          ← Back to Menu
+        </div>
+      )}
       {/* Game Header */}
       <div style={{
         textAlign: 'center',
@@ -534,23 +572,42 @@ const RacingGame: React.FC<RacingGameProps> = ({ onGameEnd, sessionId }) => {
               margin: '10px 0',
               fontFamily: 'LL Baguid, Arial, sans-serif'
             }}>Score: {calculateScore(currentTime)}</p>
-            <button
-              onClick={initializeGame}
-              style={{
-                backgroundColor: '#b08756',
-                color: 'white',
-                border: 'none',
-                padding: '15px 30px',
-                fontSize: '1.1rem',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                marginTop: '20px',
-                fontFamily: 'LL Baguid, Arial, sans-serif',
-                fontWeight: 'bold'
-              }}
-            >
-              Race Again
-            </button>
+            <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center' }}>
+              <button
+                onClick={initializeGame}
+                style={{
+                  backgroundColor: '#b08756',
+                  color: 'white',
+                  border: 'none',
+                  padding: '15px 30px',
+                  fontSize: '1.1rem',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontFamily: 'LL Baguid, Arial, sans-serif',
+                  fontWeight: 'bold'
+                }}
+              >
+                Race Again
+              </button>
+              {onBackToMenu && (
+                <button
+                  onClick={onBackToMenu}
+                  style={{
+                    backgroundColor: '#74c5ff',
+                    color: 'black',
+                    border: '2px solid #000000',
+                    padding: '15px 30px',
+                    fontSize: '1.1rem',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontFamily: 'LL Baguid, Arial, sans-serif',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Back to Menu
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
