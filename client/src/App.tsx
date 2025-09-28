@@ -4,6 +4,7 @@ import MainDisplay from './components/MainDisplay';
 import Controller from './components/Controller';
 import QRCodeGenerator from './components/QRCodeGenerator';
 import MemoryGame from './components/games/MemoryGame';
+import PlatformerGame from './components/games/PlatformerGame';
 import RacingGame from './components/games/RacingGame';
 import './App.css';
 
@@ -78,6 +79,9 @@ function App() {
   const GameScreen = () => {
     if (currentScreen === 'racing') {
       return <RacingGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
+    }
+    if (currScreen == 'platform') {
+      return <PlatformerGame onGameEnd={handleGameEnd} sessionId={sessionId} />
     }
     return <MemoryGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
   };

@@ -5,10 +5,13 @@ import BaseController from './controllers/BaseController';
 import JumpGameController from './controllers/JumpGameController';
 import TapGameController from './controllers/TapGameController';
 import WordGameController from './controllers/WordGameController';
+import PlatformerGameController from './controllers/PlatformerGameController';
 import RacingGameController from './controllers/RacingGameController';
+
 import firebaseService from '../services/firebaseService';
 
-type GameType = 'none' | 'jump' | 'tap' | 'word' | 'memory' | 'racing';
+type GameType = 'none' | 'jump' | 'tap' | 'word' | 'memory' | 'racing' | 'platformer';
+
 
 interface GameState {
   currentGame: GameType;
@@ -63,6 +66,8 @@ const Controller: React.FC = () => {
     switch (gameState.currentGame) {
       case 'memory':
         return <MemoryGameController {...baseProps} />;
+      case 'platformer':
+        return <PlatformerGameController {...baseProps} />;
       case 'racing':
         return <RacingGameController {...baseProps} />;
       case 'jump':
@@ -188,6 +193,20 @@ const Controller: React.FC = () => {
             }}
           >
             Racing
+          </button>
+          <button 
+            onClick={() => switchGame('platformer')} 
+            style={{
+              margin: '2px', 
+              padding: '5px 10px',
+              backgroundColor: gameState.currentGame === 'platformer' ? '#347ee1' : '#666',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Platformer
           </button>
           <button 
             onClick={() => switchGame('none')} 
