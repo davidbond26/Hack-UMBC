@@ -46,6 +46,10 @@ function App() {
     setCurrentScreen('platformer');
   };
 
+  const backToMenu = () => {
+    setCurrentScreen('start');
+  };
+
   const StartScreen = () => (
     <div
       className="w-screen h-screen bg-[#74c5ff] flex flex-col justify-between items-center px-10 py-15 text-black"
@@ -89,12 +93,12 @@ function App() {
 
   const GameScreen = () => {
     if (currentScreen === 'racing') {
-      return <RacingGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
+      return <RacingGame onGameEnd={handleGameEnd} onBackToMenu={backToMenu} sessionId={sessionId} />;
     }
     if (currentScreen === 'platformer') {
-      return <PlatformerGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
+      return <PlatformerGame onGameEnd={handleGameEnd} onBackToMenu={backToMenu} sessionId={sessionId} />;
     }
-    return <MemoryGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
+    return <MemoryGame onGameEnd={handleGameEnd} onBackToMenu={backToMenu} sessionId={sessionId} />;
   };
 
   return (

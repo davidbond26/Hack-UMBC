@@ -23,10 +23,11 @@ interface Player {
 
 interface PlatformerGameProps {
   onGameEnd?: (height: number, time: number) => void;
+  onBackToMenu?: () => void;
   sessionId?: string;
 }
 
-const PlatformerGame: React.FC<PlatformerGameProps> = ({ onGameEnd, sessionId }) => {
+const PlatformerGame: React.FC<PlatformerGameProps> = ({ onGameEnd, onBackToMenu, sessionId }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameLoopRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
@@ -140,7 +141,12 @@ const PlatformerGame: React.FC<PlatformerGameProps> = ({ onGameEnd, sessionId })
     setGameStarted(true);
     setGameOver(false);
   }, [generatePlatforms]);
-  
+
+  // Auto-initialize game on component mount
+  useEffect(() => {
+    initializeGame();
+  }, [initializeGame]);
+
   // Handle jump input
   const handleJumpInput = useCallback(() => {
     if (gameOver) return;
@@ -514,22 +520,42 @@ const PlatformerGame: React.FC<PlatformerGameProps> = ({ onGameEnd, sessionId })
           <p style={{margin: '5px 0'}}>Final Height: {maxHeight}</p>
           <p style={{margin: '5px 0'}}>Time: {gameTime.toFixed(1)}s</p>
         </div>
-        <button
-          onClick={initializeGame}
-          style={{
-            backgroundColor: '#000',
-            color: 'white',
-            border: 'none',
-            padding: '15px 30px',
-            fontSize: '1.2rem',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            fontFamily: 'LL Baguid, Arial, sans-serif',
-            fontWeight: 'bold'
-          }}
-        >
-          Play Again
-        </button>
+        <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+          <button
+            onClick={initializeGame}
+            style={{
+              backgroundColor: '#000',
+              color: 'white',
+              border: 'none',
+              padding: '15px 30px',
+              fontSize: '1.2rem',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              fontFamily: 'LL Baguid, Arial, sans-serif',
+              fontWeight: 'bold'
+            }}
+          >
+            Play Again
+          </button>
+          {onBackToMenu && (
+            <button
+              onClick={onBackToMenu}
+              style={{
+                backgroundColor: '#74c5ff',
+                color: 'black',
+                border: '2px solid #000000',
+                padding: '15px 30px',
+                fontSize: '1.2rem',
+                borderRadius: '12px',
+                cursor: 'pointer',
+                fontFamily: 'LL Baguid, Arial, sans-serif',
+                fontWeight: 'bold'
+              }}
+            >
+              Back to Menu
+            </button>
+          )}
+        </div>
       </div>
     );
   }
@@ -544,8 +570,45 @@ const PlatformerGame: React.FC<PlatformerGameProps> = ({ onGameEnd, sessionId })
       justifyContent: 'center',
       padding: '10px',
       fontFamily: 'LL Baguid, Arial, sans-serif',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      position: 'relative'
     }}>
+      {/* Collapsible Back to Menu Tab */}
+      {onBackToMenu && (
+        <div
+          onClick={onBackToMenu}
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '-120px',
+            transform: 'translateY(-50%)',
+            backgroundColor: '#74c5ff',
+            color: 'black',
+            border: '2px solid #000000',
+            borderLeft: 'none',
+            padding: '15px 25px 15px 15px',
+            fontSize: '1rem',
+            borderRadius: '0 12px 12px 0',
+            cursor: 'pointer',
+            fontFamily: 'LL Baguid, Arial, sans-serif',
+            fontWeight: 'bold',
+            zIndex: 1000,
+            boxShadow: '2px 4px 8px rgba(0,0,0,0.3)',
+            transition: 'left 0.3s ease',
+            width: '150px',
+            textAlign: 'center',
+            userSelect: 'none'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.left = '0px';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.left = '-120px';
+          }}
+        >
+          ← Back to Menu
+        </div>
+      )}
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}

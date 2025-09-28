@@ -187,9 +187,7 @@ const Controller: React.FC = () => {
               style={{
                 width: '120px',
                 height: 'auto',
-                imageRendering: 'pixelated',
-                imageRendering: '-moz-crisp-edges',
-                imageRendering: 'crisp-edges'
+                imageRendering: 'pixelated'
               }}
             />
           </button>
