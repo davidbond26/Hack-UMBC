@@ -12,35 +12,23 @@ const JumpGameController: React.FC<JumpGameControllerProps> = ({ playerName, ses
   };
 
   return (
-    <div className="jump-game-controller">
-      <div className="controller-header">
-        <h2>{playerName}</h2>
-        <p>Jump Game</p>
+    <div className="min-h-screen bg-red-100 flex flex-col justify-center items-center p-6">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold mb-2">{playerName}</h2>
+        <p className="text-gray-600">Jump Game</p>
       </div>
 
-      <div className="game-controls">
+      <div className="flex-1 flex items-center justify-center">
         <button
-          className="jump-button"
           onTouchStart={handleJump}
           onMouseDown={handleJump}
-          style={{
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            fontSize: '24px',
-            fontWeight: 'bold',
-            backgroundColor: '#ff6b6b',
-            color: 'white',
-            border: 'none',
-            margin: '20px auto',
-            display: 'block'
-          }}
+          className="w-52 h-52 rounded-full text-2xl font-bold bg-red-500 text-white border-none active:bg-red-600 shadow-lg hover:shadow-xl transition-all duration-150 active:scale-95"
         >
           JUMP!
         </button>
       </div>
 
-      <div className="instructions">
+      <div className="text-center text-gray-600 mb-8">
         <p>Tap the button to make your character jump!</p>
       </div>
     </div>

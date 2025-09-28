@@ -37,73 +37,56 @@ const WordGameController: React.FC<WordGameControllerProps> = ({
   };
 
   return (
-    <div className="word-game-controller">
-      <div className="controller-header">
-        <h2>{playerName}</h2>
-        <p>Word Challenge</p>
+    <div className="min-h-screen bg-blue-100 flex flex-col p-6">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold mb-2">{playerName}</h2>
+        <p className="text-gray-600">Word Challenge</p>
       </div>
 
-      <div className="game-prompt">
-        <h3>Current Challenge:</h3>
-        <p>{currentPrompt}</p>
+      <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+        <h3 className="text-lg font-semibold mb-2">Current Challenge:</h3>
+        <p className="text-blue-600">{currentPrompt}</p>
       </div>
 
-      <div className="game-controls">
-        <div className="input-section">
+      <div className="flex-1">
+        <div className="mb-4">
           <input
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your answer..."
-            style={{
-              width: '100%',
-              padding: '15px',
-              fontSize: '18px',
-              borderRadius: '8px',
-              border: '2px solid #ddd',
-              marginBottom: '10px'
-            }}
+            className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg mb-3 focus:border-blue-500 focus:outline-none"
           />
           <button
             onClick={handleSubmit}
             disabled={!inputText.trim()}
-            style={{
-              width: '100%',
-              padding: '15px',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              backgroundColor: inputText.trim() ? '#45b7d1' : '#ccc',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: inputText.trim() ? 'pointer' : 'not-allowed'
-            }}
+            className={`w-full p-4 text-lg font-bold rounded-lg ${
+              inputText.trim()
+                ? 'bg-blue-500 hover:bg-blue-600 cursor-pointer'
+                : 'bg-gray-400 cursor-not-allowed'
+            } text-white transition-colors`}
           >
             Submit Word
           </button>
         </div>
-      </div>
 
-      {submittedWords.length > 0 && (
-        <div className="submitted-words">
-          <h4>Your Words:</h4>
-          <div className="word-list">
-            {submittedWords.map((word, index) => (
-              <span key={index} className="word-tag" style={{
-                display: 'inline-block',
-                background: '#e1f5fe',
-                padding: '5px 10px',
-                margin: '2px',
-                borderRadius: '15px',
-                fontSize: '14px'
-              }}>
-                {word}
-              </span>
-            ))}
+        {submittedWords.length > 0 && (
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <h4 className="font-semibold mb-3">Your Words:</h4>
+            <div className="flex flex-wrap gap-2">
+              {submittedWords.map((word, index) => (
+                <span
+                  key={index}
+                  className="inline-block bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm"
+                >
+                  {word}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
