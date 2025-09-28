@@ -4,6 +4,7 @@ import MainDisplay from './components/MainDisplay';
 import Controller from './components/Controller';
 import QRCodeGenerator from './components/QRCodeGenerator';
 import MemoryGame from './components/games/MemoryGame';
+import PlatformerGame from './components/games/PlatformerGame';
 import './App.css';
 
 function App() {
@@ -55,7 +56,7 @@ function App() {
   );
 
   const GameScreen = () => (
-    <MemoryGame onGameEnd={handleGameEnd} sessionId={sessionId} />
+    <PlatformerGame onGameEnd={handleGameEnd} sessionId={sessionId} />
   );
 
   return (
