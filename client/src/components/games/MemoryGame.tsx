@@ -28,8 +28,18 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onGameEnd, sessionId }) => {
   // Use ref to track flipped cards to avoid stale closures
   const flippedCardsRef = useRef<number[]>([]);
 
-  // Card symbols (using emojis for now)
-  const symbols = ['🎮', '🎯', '🎨', '🎪', '🎭', '🎸', '🎲', '🎊', '🎈'];
+  // Card symbols (using retro tech icons)
+  const symbols = [
+    '/assets/BINGO.png',      // Cassette
+    '/assets/BINGO (1).png',  // Game Boy
+    '/assets/BINGO (2).png',  // Cassette tape
+    '/assets/BINGO (3).png',  // Floppy disk
+    '/assets/BINGO (4).png',  // Phone
+    '/assets/BINGO (5).png',  // CD/Vinyl
+    '/assets/BINGO (6).png',  // Game controller
+    '/assets/BINGO (7).png',  // TV
+    '/assets/BINGO (8).png'   // Headphones
+  ];
 
   // Send match updates to controllers
   const sendMatchUpdate = async (matchedCardIds: number[]) => {
@@ -278,21 +288,34 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onGameEnd, sessionId }) => {
 
   return (
     <div style={{
-      backgroundColor: '#aedfff',
+      backgroundColor: '#74c5ff', // Match the main app background
       minHeight: '100vh',
       padding: '20px',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center'
+      alignItems: 'center',
+      fontFamily: 'LL Baguid, Arial, sans-serif'
     }}>
       {/* Game Header */}
       <div style={{
         textAlign: 'center',
         marginBottom: '30px',
-        color: '#2c5aa0'
+        color: '#000000',
+        fontFamily: 'LL Baguid, Arial, sans-serif'
       }}>
-        <h1 style={{ fontSize: '2.5rem', margin: '10px 0' }}>Memory Game</h1>
-        <div style={{ display: 'flex', gap: '40px', justifyContent: 'center', fontSize: '1.2rem' }}>
+        <h1 style={{ 
+          fontSize: '3rem', 
+          margin: '10px 0',
+          fontFamily: 'LL Baguid, Arial, sans-serif',
+          fontWeight: 'bold'
+        }}>Memory Game</h1>
+        <div style={{ 
+          display: 'flex', 
+          gap: '40px', 
+          justifyContent: 'center', 
+          fontSize: '1.2rem',
+          fontFamily: 'LL Baguid, Arial, sans-serif'
+        }}>
           <div>Player: {currentPlayer}</div>
           <div>Time: {currentTime}s</div>
           <div>Moves: {moves}</div>
@@ -310,62 +333,84 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onGameEnd, sessionId }) => {
         width: '100%',
         aspectRatio: '2/1'
       }}>
-        {cards.map((card) => (
-          <div
-            key={card.id}
-            onClick={() => handleCardClick(card.id)}
-            style={{
-              backgroundColor: '#347ee1',
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '2.5rem',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              transform: card.isFlipped || card.isMatched ? 'rotateY(180deg)' : 'rotateY(0deg)',
-              transformStyle: 'preserve-3d',
-              position: 'relative',
-              minHeight: '100px',
-              border: card.isMatched ? '3px solid #28a745' : '3px solid transparent',
-              boxShadow: card.isMatched ? '0 0 20px rgba(40, 167, 69, 0.5)' : '0 4px 8px rgba(0,0,0,0.1)'
-            }}
-          >
-            {/* Card Back */}
-            <div style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              backfaceVisibility: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '12px',
-              backgroundColor: '#347ee1',
-              color: 'white',
-              fontSize: '1.5rem'
-            }}>
-              ?
+        {cards.map((card) => {
+          // Alternate between yellow and black cards in a checkerboard pattern
+          const row = Math.floor(card.id / 6);
+          const col = card.id % 6;
+          const isYellowCard = (row + col) % 2 === 0;
+          const cardBackgroundColor = isYellowCard ? '#ffe46f' : '#000000';
+          
+          return (
+            <div
+              key={card.id}
+              onClick={() => handleCardClick(card.id)}
+              style={{
+                backgroundColor: cardBackgroundColor,
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                transform: card.isFlipped || card.isMatched ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                transformStyle: 'preserve-3d',
+                position: 'relative',
+                minHeight: '100px',
+                border: card.isMatched ? '4px solid #ff69b4' : '3px solid #333',
+                boxShadow: card.isMatched ? '0 0 20px rgba(255, 105, 180, 0.5)' : '0 4px 8px rgba(0,0,0,0.3)'
+              }}
+            >
+              {/* Card Back */}
+              <div style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                backfaceVisibility: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '12px',
+                backgroundColor: cardBackgroundColor,
+                padding: '15px'
+              }}>
+                <img 
+                  src="/assets/BINGO (10).png" 
+                  alt="UMBC Retriever" 
+                  style={{
+                    maxWidth: '70%',
+                    maxHeight: '70%',
+                    objectFit: 'contain'
+                  }}
+                />
+              </div>
+              
+              {/* Card Front */}
+              <div style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                backfaceVisibility: 'hidden',
+                transform: 'rotateY(180deg)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '12px',
+                backgroundColor: cardBackgroundColor,
+                padding: '10px'
+              }}>
+                <img 
+                  src={card.symbol} 
+                  alt="retro tech" 
+                  style={{
+                    maxWidth: '80%',
+                    maxHeight: '80%',
+                    objectFit: 'contain'
+                  }}
+                />
+              </div>
             </div>
-            
-            {/* Card Front */}
-            <div style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              backfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '12px',
-              backgroundColor: '#ffffff',
-              color: '#347ee1'
-            }}>
-              {card.symbol}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Game Win Message */}
@@ -387,22 +432,38 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onGameEnd, sessionId }) => {
             padding: '40px',
             borderRadius: '20px',
             textAlign: 'center',
-            color: '#347ee1'
+            color: '#000000',
+            fontFamily: 'LL Baguid, Arial, sans-serif'
           }}>
-            <h2 style={{ fontSize: '2.5rem', margin: '0 0 20px 0' }}>🎉 You Won!</h2>
-            <p style={{ fontSize: '1.2rem', margin: '10px 0' }}>Moves: {moves}</p>
-            <p style={{ fontSize: '1.2rem', margin: '10px 0' }}>Score: {calculateScore()}</p>
+            <h2 style={{ 
+              fontSize: '2.5rem', 
+              margin: '0 0 20px 0',
+              fontFamily: 'LL Baguid, Arial, sans-serif',
+              fontWeight: 'bold'
+            }}>🎉 You Won!</h2>
+            <p style={{ 
+              fontSize: '1.2rem', 
+              margin: '10px 0',
+              fontFamily: 'LL Baguid, Arial, sans-serif'
+            }}>Moves: {moves}</p>
+            <p style={{ 
+              fontSize: '1.2rem', 
+              margin: '10px 0',
+              fontFamily: 'LL Baguid, Arial, sans-serif'
+            }}>Score: {calculateScore()}</p>
             <button
               onClick={initializeGame}
               style={{
-                backgroundColor: '#347ee1',
+                backgroundColor: '#000000',
                 color: 'white',
                 border: 'none',
                 padding: '15px 30px',
                 fontSize: '1.1rem',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                marginTop: '20px'
+                marginTop: '20px',
+                fontFamily: 'LL Baguid, Arial, sans-serif',
+                fontWeight: 'bold'
               }}
             >
               Play Again
@@ -415,8 +476,9 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onGameEnd, sessionId }) => {
       <div style={{
         marginTop: '30px',
         textAlign: 'center',
-        color: '#2c5aa0',
-        fontSize: '1.1rem'
+        color: '#000000',
+        fontSize: '1.1rem',
+        fontFamily: 'LL Baguid, Arial, sans-serif'
       }}>
         Use your phone to select cards and find matching pairs!
       </div>
