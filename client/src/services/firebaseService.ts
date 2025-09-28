@@ -68,6 +68,7 @@ class FirebaseService {
   async sendInteraction(action: string, data: any) {
     try {
       if (!this.sessionId || !this.playerId) {
+        console.error('❌ Firebase service not initialized:', { sessionId: this.sessionId, playerId: this.playerId });
         throw new Error('Session not initialized');
       }
 
@@ -80,11 +81,13 @@ class FirebaseService {
         timestamp: Date.now()
       };
 
-      console.log('Sending interaction to Firebase:', interaction);
+      console.log('🔥 Sending interaction to Firebase:', interaction);
+      console.log('🔥 Firebase path:', `sessions/${this.sessionId}/interactions`);
       const result = await push(interactionRef, interaction);
+      console.log('🔥 Firebase push result:', result.key);
       return result;
     } catch (error) {
-      console.error('Error sending interaction:', error);
+      console.error('❌ Error sending interaction:', error);
       throw error;
     }
   }
@@ -137,25 +140,44 @@ class FirebaseService {
 
   // Listen for new interactions only
   onNewInteractions(callback: (interaction: Interaction & { id: string }) => void) {
-    if (!this.sessionId) return;
+    if (!this.sessionId) {
+      console.error('❌ Cannot set up listener: no sessionId');
+      return;
+    }
 
     const interactionsRef = ref(database, `sessions/${this.sessionId}/interactions`);
     
-    console.log('Setting up interaction listener for session:', this.sessionId);
+    console.log('🔥 Setting up interaction listener for session:', this.sessionId);
+    console.log('🔥 Firebase path for listener:', `sessions/${this.sessionId}/interactions`);
+    
+    const processedInteractions = new Set<string>();
     
     const unsubscribe = onValue(interactionsRef, (snapshot) => {
-      console.log('Interactions data received:', snapshot.val());
+      console.log('🔥 Interactions data received:', snapshot.val());
       
       if (snapshot.exists()) {
         snapshot.forEach((childSnapshot) => {
-          const interaction = childSnapshot.val() as Interaction;
-          console.log('Processing interaction:', interaction);
-          callback({
-            ...interaction,
-            id: childSnapshot.key || ''
-          });
+          const interactionId = childSnapshot.key || '';
+          
+          // Only process new interactions
+          if (!processedInteractions.has(interactionId)) {
+            processedInteractions.add(interactionId);
+            
+            const interaction = childSnapshot.val() as Interaction;
+            console.log('🔥 Processing NEW interaction:', interaction);
+            callback({
+              ...interaction,
+              id: interactionId
+            });
+          } else {
+            console.log('🔥 Skipping already processed interaction:', interactionId);
+          }
         });
+      } else {
+        console.log('🔥 No interactions found in snapshot');
       }
+    }, (error) => {
+      console.error('❌ Firebase listener error:', error);
     });
 
     return unsubscribe;
