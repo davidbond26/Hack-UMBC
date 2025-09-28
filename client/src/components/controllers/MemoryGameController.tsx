@@ -41,21 +41,35 @@ const MemoryGameController: React.FC<MemoryGameControllerProps> = ({
 
   return (
     <div style={{
-      backgroundColor: '#aedfff',
+      backgroundColor: '#74c5ff', // Match main app background
       minHeight: '100vh',
       padding: '20px',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      fontFamily: 'LL Baguid, Arial, sans-serif'
     }}>
       {/* Header */}
       <div style={{
         textAlign: 'center',
         marginBottom: '30px',
-        color: '#2c5aa0'
+        color: '#000000',
+        fontFamily: 'LL Baguid, Arial, sans-serif'
       }}>
-        <h1 style={{ fontSize: '1.8rem', margin: '10px 0' }}>Memory Game</h1>
-        <p style={{ fontSize: '1rem' }}>Player: {playerName}</p>
-        <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Tap a card to flip it!</p>
+        <h1 style={{ 
+          fontSize: '1.8rem', 
+          margin: '10px 0',
+          fontFamily: 'LL Baguid, Arial, sans-serif',
+          fontWeight: 'bold'
+        }}>Memory Game</h1>
+        <p style={{ 
+          fontSize: '1rem',
+          fontFamily: 'LL Baguid, Arial, sans-serif'
+        }}>Player: {playerName}</p>
+        <p style={{ 
+          fontSize: '0.9rem', 
+          opacity: 0.8,
+          fontFamily: 'LL Baguid, Arial, sans-serif'
+        }}>Tap a card to flip it!</p>
       </div>
 
       {/* Card Grid Selector */}
@@ -71,16 +85,26 @@ const MemoryGameController: React.FC<MemoryGameControllerProps> = ({
           const isMatched = matchedCards.includes(index);
           const isClickable = !isMatched;
           
+          // Alternate between yellow and black in checkerboard pattern
+          const row = Math.floor(index / 6);
+          const col = index % 6;
+          const isYellowCard = (row + col) % 2 === 0;
+          const buttonColor = isMatched 
+            ? (isYellowCard ? '#b8a142' : '#333333') // Darker versions when matched
+            : (isYellowCard ? '#ffe46f' : '#000000');
+          
           return (
             <button
               key={index}
               onClick={() => isClickable && handleCardSelect(index)}
               disabled={!isClickable}
               style={{
-                backgroundColor: isMatched ? '#1a4a73' : '#347ee1',
-                border: 'none',
+                backgroundColor: buttonColor,
+                border: '2px solid #333',
                 borderRadius: '8px',
-                color: isMatched ? '#888' : 'white',
+                color: isMatched 
+                  ? '#888' 
+                  : (isYellowCard ? '#000000' : '#ffffff'),
                 fontSize: '1.2rem',
                 cursor: isClickable ? 'pointer' : 'not-allowed',
                 transition: isMatched ? 'none' : 'all 0.2s ease',
@@ -88,8 +112,10 @@ const MemoryGameController: React.FC<MemoryGameControllerProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: isMatched ? '0 1px 2px rgba(0,0,0,0.2)' : '0 2px 4px rgba(0,0,0,0.1)',
+                boxShadow: isMatched ? '0 1px 2px rgba(0,0,0,0.2)' : '0 2px 4px rgba(0,0,0,0.3)',
                 opacity: isMatched ? 0.6 : 1,
+                fontFamily: 'LL Baguid, Arial, sans-serif',
+                fontWeight: 'bold',
                 // Force override any browser styling
                 WebkitAppearance: 'none',
                 outline: 'none',
@@ -99,7 +125,7 @@ const MemoryGameController: React.FC<MemoryGameControllerProps> = ({
                 // Prevent any visual feedback on interaction for matched cards
                 ...(isMatched && {
                   pointerEvents: 'none',
-                  background: '#1a4a73',
+                  background: buttonColor,
                   backgroundImage: 'none',
                   backgroundClip: 'padding-box',
                   MozBackgroundClip: 'padding-box',
@@ -109,19 +135,19 @@ const MemoryGameController: React.FC<MemoryGameControllerProps> = ({
               {...(isClickable ? {
                 onTouchStart: (e) => {
                   e.currentTarget.style.transform = 'scale(0.95)';
-                  e.currentTarget.style.backgroundColor = '#2968c7';
+                  e.currentTarget.style.backgroundColor = isYellowCard ? '#d4c659' : '#333333';
                 },
                 onTouchEnd: (e) => {
                   e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.backgroundColor = '#347ee1';
+                  e.currentTarget.style.backgroundColor = isYellowCard ? '#ffe46f' : '#000000';
                 },
                 onMouseDown: (e) => {
                   e.currentTarget.style.transform = 'scale(0.95)';
-                  e.currentTarget.style.backgroundColor = '#2968c7';
+                  e.currentTarget.style.backgroundColor = isYellowCard ? '#d4c659' : '#333333';
                 },
                 onMouseUp: (e) => {
                   e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.backgroundColor = '#347ee1';
+                  e.currentTarget.style.backgroundColor = isYellowCard ? '#ffe46f' : '#000000';
                 }
               } : {})}
             >
@@ -135,11 +161,18 @@ const MemoryGameController: React.FC<MemoryGameControllerProps> = ({
       <div style={{
         marginTop: '20px',
         textAlign: 'center',
-        color: '#2c5aa0',
-        fontSize: '0.9rem'
+        color: '#000000',
+        fontSize: '0.9rem',
+        fontFamily: 'LL Baguid, Arial, sans-serif'
       }}>
-        <p>Find matching pairs by selecting two cards!</p>
-        <p style={{ marginTop: '10px', opacity: 0.7 }}>
+        <p style={{ fontFamily: 'LL Baguid, Arial, sans-serif' }}>
+          Find matching pairs by selecting two cards!
+        </p>
+        <p style={{ 
+          marginTop: '10px', 
+          opacity: 0.7,
+          fontFamily: 'LL Baguid, Arial, sans-serif'
+        }}>
           Session: {sessionId}
         </p>
       </div>
