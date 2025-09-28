@@ -5,9 +5,10 @@ import BaseController from './controllers/BaseController';
 import JumpGameController from './controllers/JumpGameController';
 import TapGameController from './controllers/TapGameController';
 import WordGameController from './controllers/WordGameController';
+import RacingGameController from './controllers/RacingGameController';
 import firebaseService from '../services/firebaseService';
 
-type GameType = 'none' | 'jump' | 'tap' | 'word' | 'memory';
+type GameType = 'none' | 'jump' | 'tap' | 'word' | 'memory' | 'racing';
 
 interface GameState {
   currentGame: GameType;
@@ -62,6 +63,8 @@ const Controller: React.FC = () => {
     switch (gameState.currentGame) {
       case 'memory':
         return <MemoryGameController {...baseProps} />;
+      case 'racing':
+        return <RacingGameController {...baseProps} />;
       case 'jump':
         return <JumpGameController {...baseProps} />;
       case 'tap':
@@ -158,10 +161,10 @@ const Controller: React.FC = () => {
       }}>
         <p style={{ marginBottom: '8px' }}>Dev Controls (will be removed):</p>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button 
-            onClick={() => switchGame('memory')} 
+          <button
+            onClick={() => switchGame('memory')}
             style={{
-              margin: '2px', 
+              margin: '2px',
               padding: '5px 10px',
               backgroundColor: gameState.currentGame === 'memory' ? '#347ee1' : '#666',
               color: 'white',
@@ -171,6 +174,20 @@ const Controller: React.FC = () => {
             }}
           >
             Memory
+          </button>
+          <button
+            onClick={() => switchGame('racing')}
+            style={{
+              margin: '2px',
+              padding: '5px 10px',
+              backgroundColor: gameState.currentGame === 'racing' ? '#347ee1' : '#666',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Racing
           </button>
           <button 
             onClick={() => switchGame('none')} 

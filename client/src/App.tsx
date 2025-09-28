@@ -4,15 +4,16 @@ import MainDisplay from './components/MainDisplay';
 import Controller from './components/Controller';
 import QRCodeGenerator from './components/QRCodeGenerator';
 import MemoryGame from './components/games/MemoryGame';
+import RacingGame from './components/games/RacingGame';
 import './App.css';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<'start' | 'game'>('start');
+  const [currentScreen, setCurrentScreen] = useState<'start' | 'memory' | 'racing'>('start');
   const [sessionId, setSessionId] = useState('');
 
   useEffect(() => {
     // Generate session ID when app starts
-    const newSessionId = 'memory-game-' + Date.now();
+    const newSessionId = 'game-session-' + Date.now();
     setSessionId(newSessionId);
   }, []);
 
@@ -28,14 +29,21 @@ function App() {
 
   const handleScreenClick = () => {
     if (currentScreen === 'start') {
-      setCurrentScreen('game');
+      setCurrentScreen('memory'); // Default to memory game for now
     }
+  };
+
+  const switchToRacing = () => {
+    setCurrentScreen('racing');
+  };
+
+  const switchToMemory = () => {
+    setCurrentScreen('memory');
   };
 
   const StartScreen = () => (
     <div
-      className="w-screen h-screen bg-[#74c5ff] flex flex-col justify-between items-center px-10 py-15 cursor-pointer text-black"
-      onClick={handleScreenClick}
+      className="w-screen h-screen bg-[#74c5ff] flex flex-col justify-between items-center px-10 py-15 text-black"
     >
       {/* Title at top */}
       <div className="text-7xl font-bold text-center mt-10" style={{ fontFamily: 'LL Baguid, Arial, sans-serif' }}>
@@ -47,16 +55,32 @@ function App() {
         <QRCodeGenerator onPlayerJoin={handlePlayerJoin} sessionId={sessionId} />
       </div>
 
-      {/* Press to Start at bottom */}
-      <div className="text-3xl text-center mb-10 animate-pulse" style={{ fontFamily: 'LL Baguid, Arial, sans-serif' }}>
-        (Press to Start)
+      {/* Game selection buttons - temporary for testing */}
+      <div className="flex gap-4 mb-4">
+        <button
+          onClick={switchToMemory}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+          style={{ fontFamily: 'LL Baguid, Arial, sans-serif' }}
+        >
+          Memory Game
+        </button>
+        <button
+          onClick={switchToRacing}
+          className="bg-yellow-600 text-white px-4 py-2 rounded"
+          style={{ fontFamily: 'LL Baguid, Arial, sans-serif' }}
+        >
+          Racing Game
+        </button>
       </div>
     </div>
   );
 
-  const GameScreen = () => (
-    <MemoryGame onGameEnd={handleGameEnd} sessionId={sessionId} />
-  );
+  const GameScreen = () => {
+    if (currentScreen === 'racing') {
+      return <RacingGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
+    }
+    return <MemoryGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
+  };
 
   return (
     <Router>
