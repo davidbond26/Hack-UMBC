@@ -91,58 +91,120 @@ const Controller: React.FC = () => {
   if (!isConnected) {
     return (
       <div style={{
-        backgroundColor: '#aedfff',
+        backgroundColor: '#74c5ff',
         minHeight: '100vh',
-        padding: '20px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: '20px',
+        fontFamily: 'LL Baguid, Arial, sans-serif'
       }}>
         <div style={{
-          backgroundColor: 'white',
-          padding: '30px',
-          borderRadius: '15px',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-          width: '100%',
-          maxWidth: '400px'
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px'
         }}>
-          <h1 style={{ color: '#347ee1', textAlign: 'center', marginBottom: '20px' }}>Join Game</h1>
-          <p style={{ color: '#2c5aa0', textAlign: 'center', marginBottom: '20px' }}>
-            Session: {sessionId}
-          </p>
+          {/* Main Title */}
+          <h1 style={{
+            fontSize: '64px',
+            fontWeight: 'bold',
+            color: '#000000',
+            margin: '0',
+            fontFamily: 'LL Baguid, Arial, sans-serif',
+            textAlign: 'center'
+          }}>
+            ENTER
+          </h1>
+
+          {/* Subtitle */}
+          <h2 style={{
+            fontSize: '40px',
+            fontWeight: 'bold',
+            color: '#000000',
+            margin: '0',
+            fontFamily: 'LL Baguid, Arial, sans-serif',
+            textAlign: 'center'
+          }}>
+            YOUR NAME:
+          </h2>
+
+          {/* Input Field */}
           <input
             type="text"
-            placeholder="Enter your name"
+            placeholder=""
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && playerName.trim()) {
+                handleJoinGame();
+              }
+            }}
             style={{
-              width: '100%',
-              padding: '15px',
-              fontSize: '16px',
-              borderRadius: '8px',
-              border: '2px solid #ddd',
-              marginBottom: '15px',
-              boxSizing: 'border-box'
+              width: '300px',
+              height: '50px',
+              fontSize: '24px',
+              fontFamily: 'LL Baguid, Arial, sans-serif',
+              backgroundColor: 'white',
+              border: '3px solid #000000',
+              borderRadius: '0',
+              padding: '10px 15px',
+              boxSizing: 'border-box',
+              textAlign: 'center',
+              outline: 'none',
+              color: '#000000'
             }}
           />
+
+          {/* Play Button */}
           <button
             onClick={handleJoinGame}
             disabled={!playerName.trim()}
             style={{
-              width: '100%',
-              padding: '15px',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              backgroundColor: playerName.trim() ? '#347ee1' : '#ccc',
-              color: 'white',
+              background: 'none',
               border: 'none',
-              borderRadius: '8px',
-              cursor: playerName.trim() ? 'pointer' : 'not-allowed'
+              cursor: playerName.trim() ? 'pointer' : 'not-allowed',
+              opacity: playerName.trim() ? 1 : 0.5,
+              transition: 'opacity 0.2s ease, transform 0.1s ease',
+              outline: 'none'
+            }}
+            onMouseDown={(e) => {
+              if (playerName.trim()) {
+                e.currentTarget.style.transform = 'scale(0.95)';
+              }
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            Join Game
+            <img
+              src="/assets/play-button.png"
+              alt="Play"
+              style={{
+                width: '120px',
+                height: 'auto',
+                imageRendering: 'pixelated',
+                imageRendering: '-moz-crisp-edges',
+                imageRendering: 'crisp-edges'
+              }}
+            />
           </button>
+
+          {/* Session ID - Small text at bottom */}
+          <p style={{
+            fontSize: '16px',
+            color: '#000000',
+            fontFamily: 'LL Baguid, Arial, sans-serif',
+            opacity: 0.7,
+            margin: '20px 0 0 0',
+            textAlign: 'center'
+          }}>
+            Session: {sessionId}
+          </p>
         </div>
       </div>
     );
