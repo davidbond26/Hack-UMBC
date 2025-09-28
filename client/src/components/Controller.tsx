@@ -6,9 +6,12 @@ import JumpGameController from './controllers/JumpGameController';
 import TapGameController from './controllers/TapGameController';
 import WordGameController from './controllers/WordGameController';
 import PlatformerGameController from './controllers/PlatformerGameController';
+import RacingGameController from './controllers/RacingGameController';
+
 import firebaseService from '../services/firebaseService';
 
-type GameType = 'none' | 'jump' | 'tap' | 'word' | 'memory' | 'platformer';
+type GameType = 'none' | 'jump' | 'tap' | 'word' | 'memory' | 'racing' | 'platformer';
+
 
 interface GameState {
   currentGame: GameType;
@@ -65,6 +68,8 @@ const Controller: React.FC = () => {
         return <MemoryGameController {...baseProps} />;
       case 'platformer':
         return <PlatformerGameController {...baseProps} />;
+      case 'racing':
+        return <RacingGameController {...baseProps} />;
       case 'jump':
         return <JumpGameController {...baseProps} />;
       case 'tap':
@@ -161,10 +166,10 @@ const Controller: React.FC = () => {
       }}>
         <p style={{ marginBottom: '8px' }}>Dev Controls (will be removed):</p>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button 
-            onClick={() => switchGame('memory')} 
+          <button
+            onClick={() => switchGame('memory')}
             style={{
-              margin: '2px', 
+              margin: '2px',
               padding: '5px 10px',
               backgroundColor: gameState.currentGame === 'memory' ? '#347ee1' : '#666',
               color: 'white',
@@ -174,6 +179,20 @@ const Controller: React.FC = () => {
             }}
           >
             Memory
+          </button>
+          <button
+            onClick={() => switchGame('racing')}
+            style={{
+              margin: '2px',
+              padding: '5px 10px',
+              backgroundColor: gameState.currentGame === 'racing' ? '#347ee1' : '#666',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Racing
           </button>
           <button 
             onClick={() => switchGame('platformer')} 
