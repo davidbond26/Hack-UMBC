@@ -9,7 +9,7 @@ import RacingGame from './components/games/RacingGame';
 import './App.css';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<'start' | 'memory' | 'racing'>('start');
+  const [currentScreen, setCurrentScreen] = useState<'start' | 'memory' | 'racing' | 'platformer'>('start');
   const [sessionId, setSessionId] = useState('');
 
   useEffect(() => {
@@ -42,6 +42,10 @@ function App() {
     setCurrentScreen('memory');
   };
 
+  const switchToPlatformer = () => {
+    setCurrentScreen('platformer');
+  };
+
   const StartScreen = () => (
     <div
       className="w-screen h-screen bg-[#74c5ff] flex flex-col justify-between items-center px-10 py-15 text-black"
@@ -72,6 +76,13 @@ function App() {
         >
           Racing Game
         </button>
+        <button
+          onClick={switchToPlatformer}
+          className="bg-green-600 text-white px-4 py-2 rounded"
+          style={{ fontFamily: 'LL Baguid, Arial, sans-serif' }}
+        >
+          Platformer Game
+        </button>
       </div>
     </div>
   );
@@ -80,8 +91,8 @@ function App() {
     if (currentScreen === 'racing') {
       return <RacingGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
     }
-    if (currScreen == 'platform') {
-      return <PlatformerGame onGameEnd={handleGameEnd} sessionId={sessionId} />
+    if (currentScreen === 'platformer') {
+      return <PlatformerGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
     }
     return <MemoryGame onGameEnd={handleGameEnd} sessionId={sessionId} />;
   };
